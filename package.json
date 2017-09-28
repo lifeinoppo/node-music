@@ -1,5 +1,5 @@
 {
-  "name": "node-js-getting-started",
+  "name": "node-music",
   "version": "1.0.0",
   "private": true,
   "description": "A sample Node.js app using Express",
@@ -18,9 +18,24 @@
     "leanengine": "^3.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "big-integer": "^1.6.25"
   },
   "engines": {
     "node": "6.x"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lifeinoppo/node-music.git"
+  },
+  "keywords": [
+    "music",
+    "netease"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lifeinoppo/node-music/issues"
+  },
+  "homepage": "https://github.com/lifeinoppo/node-music#readme"
 }
