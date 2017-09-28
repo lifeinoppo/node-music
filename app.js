@@ -39,18 +39,7 @@ app.enable('trust proxy');
 // 需要重定向到 HTTPS 可去除下一行的注释。
 // app.use(AV.Cloud.HttpsRedirect());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-app.get('/', function(req, res) {
-  res.render('index', { currentTime: new Date() });
-});
-
-// 可以将一类的路由单独保存在一个文件中
-app.use('/todos', require('./routes/todos'));
-
-app.use(function(req, res, next) {
+app.use(funcstion(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
   if (!res.headersSent) {
     var err = new Error('Not Found');
@@ -1043,9 +1032,7 @@ app.all('*', function(req, res, next) {
     res.header("Content-Type", "application/json;charset=utf-8");
     next();
 });
-var server = app.listen(3000, function() {
-  console.log("启动App");
-});
+
 
 function id2Url(pic_str) {
   var magic = str2Arr('3go8&$8*3*3h0k(2)2')
