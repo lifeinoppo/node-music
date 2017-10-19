@@ -20,6 +20,8 @@ require('./cloud');
 var app = express();
 // add for netease music 
 var dir = "/v1"
+var dev = "/v2"
+var music = AV.Object.extend('music');
 // add for netease music  end 
 
 
@@ -149,6 +151,22 @@ app.get(dir + '/login/cellphone', function(request, response) {
   };
   createWebAPIRequest('/weapi/login/cellphone', data, null, response)
 });
+
+/* record music dataUrl 
+    */
+app.get(dev + '/musicdataUrl', function(request,response){
+  
+  var dataUrl = request.post.dataUrl;
+  var title = request.post.title;
+  var music = new music();
+  music.set('dataUrl', dataUrl);
+  music.set('title', title);
+  music.save();
+
+})
+/*    
+   record music dataUrl end  
+*/
 
 app.get(dir + '/login', function(request, response) {
   var email = request.query.email;
