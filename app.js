@@ -156,8 +156,8 @@ app.get(dir + '/login/cellphone', function(request, response) {
     */
 app.get(dev + '/musicdataUrl', function(request,response){
   
-  var dataUrl = request.post.dataUrl;
-  var title = request.post.title;
+  var dataUrl = request.query.dataUrl;
+  var title = request.query.name;
   var music = new music();
   music.set('dataUrl', dataUrl);
   music.set('title', title);
