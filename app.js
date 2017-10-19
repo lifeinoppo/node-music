@@ -21,7 +21,7 @@ var app = express();
 // add for netease music 
 var dir = "/v1"
 var dev = "/v2"
-var music = AV.Object.extend('music');
+var Music = AV.Object.extend('music');
 // add for netease music  end 
 
 
@@ -157,13 +157,13 @@ app.get(dir + '/login/cellphone', function(request, response) {
 app.get(dev + '/musicdataUrl', function(request,response){
   
   var dataUrl = request.query.dataUrl;
-  var title = request.query.name;
-  var music = new music();
+  var title = request.query.title;
+  var music = new Music();
   music.set('dataUrl', dataUrl);
   music.set('title', title);
   music.save();
 
-})
+});
 /*    
    record music dataUrl end  
 */
