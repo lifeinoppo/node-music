@@ -165,6 +165,36 @@ app.get(dev + '/musicdataUrl', function(request,response){
   response.end(' Enjoy music and fly,Flight 404,good night ... ');
 
 });
+
+app.get("/music", function(request,response){
+  // index 设置为19 
+  var query = new AV.Query("music");
+  query.descending('createdAt');
+  query.limit(19);
+  query.include('title');
+  query.include('dataUrl');
+  query.find().then(function (musics) {
+  // 如果这样写，第二个条件将覆盖第一个条件，查询只会返回 priority = 1 的结果
+    // 随机返回一首最近的歌
+    var i = getRandomNum(0,19);
+    var music = musics[i];
+    var music_title = music.get('title');
+    var music_dataUrl = music.get('dataUrl');
+    // response with music info 
+    var music_info = {"src":music_dataUrl,"name":music_title};
+    response.send(music_info);
+  }, function (error) {
+    console.log('error while query music... ')
+  });
+})
+
+// utils 
+function getRandomNum(Min, Max)
+{   
+  var Range = Max - Min;   
+  var Rand = Math.random();   
+  return(Min + Math.round(Rand * Range));
+},
 /*    
    record music dataUrl end  
 */
