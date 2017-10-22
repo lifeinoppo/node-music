@@ -17,7 +17,8 @@
     "leancloud-storage": "^3.0.0",
     "leanengine": "^3.0.0",
     "request": "2.83.0",
-    "big-integer": "1.6.25"
+    "big-integer": "1.6.25",
+    "qiniu": "7.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

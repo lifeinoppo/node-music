@@ -19,10 +19,19 @@ require('./cloud');
 
 var app = express();
 // add for netease music 
-var dir = "/v1"
-var dev = "/v2"
+var dir = "/v1";
+var dev = "/v2";
 var Music = AV.Object.extend('music');
+var qiniu = require('qiniu');
 // add for netease music  end 
+
+// global config 
+var config = {
+  qiniuak: process.env.qiniuaccess,
+  qiniusk: process.env.qiniusecret,
+  qiniupublicBucketDomain : "http://oy7s0bh5s.bkt.clouddn.com",
+};
+// end of global config 
 
 
 // 设置模板引擎
@@ -159,10 +168,34 @@ app.get(dev + '/musicdataUrl', function(request,response){
   var dataUrl = request.query.dataUrl;
   var title = request.query.title;
   var music = new Music();
-  music.set('dataUrl', dataUrl);
+
+  // add one trans with hep of qiniu cloud storage support 
+  var resUrl = dataUrl;
+  var bucket = "music";  // unchanged 
+  var key = title;
+  var mac = new qiniu.auth.digest.Mac(config.qiniuak, config.qiniusk);
+  var config = new qiniu.conf.Config();
+  var bucketManager = new qiniu.rs.BucketManager(mac, config);
+  var publicDownloadUrl = bucketManager.publicDownloadUrl(config.qiniupublicBucketDomain, key);   // 资源的真实路径
+  // end of qiniu help 
+
+  music.set('dataUrl', publicDownloadUrl);
   music.set('title', title);
   music.save();
-  response.end(' Enjoy music and fly,Flight 404,good night ... ');
+
+  bucketManager.fetch(resUrl, bucket, key, function(err, respBody, respInfo) {
+    if (err) {
+      console.log(err);
+      //throw err;
+    } else {
+      if (respInfo.statusCode == 200) {
+        response.end(' Enjoy music and fly,Flight 404,good night ... ');
+      } else {
+        console.log(respInfo.statusCode);
+        console.log(respBody);
+      }
+    }
+  });
 
 });
 
