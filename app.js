@@ -159,6 +159,8 @@ app.get(dev + '/musicdataUrl', function(request,response){
   
   var dataUrl = request.query.dataUrl;
   var title = request.query.title;
+  var poster = request.query.poster;
+  var author = request.query.author;
   var music = new Music();
 
   // add one trans with hep of qiniu cloud storage support 
@@ -173,6 +175,8 @@ app.get(dev + '/musicdataUrl', function(request,response){
 
   music.set('dataUrl', publicDownloadUrl);
   music.set('title', title);
+  music.set('poster',poster);
+  music.set('author',author);
   music.save();
 
   bucketManager.fetch(resUrl, bucket, key, function(err, respBody, respInfo) {
@@ -198,6 +202,8 @@ app.get("/music", function(request,response){
   query.limit(19);
   query.include('title');
   query.include('dataUrl');
+  query.include('poster');
+  query.include('author');
   query.find().then(function (musics) {
   // 如果这样写，第二个条件将覆盖第一个条件，查询只会返回 priority = 1 的结果
     // 随机返回一首最近的歌
@@ -205,8 +211,10 @@ app.get("/music", function(request,response){
     var music = musics[i];
     var music_title = music.get('title');
     var music_dataUrl = music.get('dataUrl');
+    var music_poster = music.get('poster');
+    var music_author = music.get('author');
     // response with music info 
-    var music_info = {"src":music_dataUrl,"name":music_title};
+    var music_info = {"src":music_dataUrl,"name":music_title,"poster":music_poster,"author":music_author};
     response.send(music_info);
   }, function (error) {
     console.log('error while query music... ')
