@@ -25,14 +25,6 @@ var Music = AV.Object.extend('music');
 var qiniu = require('qiniu');
 // add for netease music  end 
 
-// global config 
-var config = {
-  qiniuak: process.env.qiniuaccess,
-  qiniusk: process.env.qiniusecret,
-  qiniupublicBucketDomain : "http://oy7s0bh5s.bkt.clouddn.com",
-};
-// end of global config 
-
 
 // 设置模板引擎
 app.set('views', path.join(__dirname, 'views'));
@@ -173,10 +165,10 @@ app.get(dev + '/musicdataUrl', function(request,response){
   var resUrl = dataUrl;
   var bucket = "music";  // unchanged 
   var key = title;
-  var mac = new qiniu.auth.digest.Mac(config.qiniuak, config.qiniusk);
+  var mac = new qiniu.auth.digest.Mac(process.env.qiniuaccess, process.env.qiniusecret);
   var config = new qiniu.conf.Config();
   var bucketManager = new qiniu.rs.BucketManager(mac, config);
-  var publicDownloadUrl = bucketManager.publicDownloadUrl(config.qiniupublicBucketDomain, key);   // 资源的真实路径
+  var publicDownloadUrl = bucketManager.publicDownloadUrl(process.env.qiniupublicBucketDomain, key);   // 资源的真实路径
   // end of qiniu help 
 
   music.set('dataUrl', publicDownloadUrl);
