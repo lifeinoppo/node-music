@@ -200,7 +200,7 @@ app.get(dev + '/musicstarred', function(request,response){
     }
   });
 
-}
+});
 // the above function "musicstarred" works with function above the function above -- "musicdataUrl"
 
 
