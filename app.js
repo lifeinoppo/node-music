@@ -23,6 +23,12 @@ var dir = "/v1";
 var dev = "/v2";
 var Music = AV.Object.extend('music');
 var qiniu = require('qiniu');
+var netease = {
+    dataUrl : "",
+    title : "",
+    poster : "",
+    author : ""
+}
 // add for netease music  end 
 
 
@@ -156,27 +162,28 @@ app.get(dir + '/login/cellphone', function(request, response) {
 /* record music dataUrl 
     */
 app.get(dev + '/musicdataUrl', function(request,response){
-  
-  var dataUrl = request.query.dataUrl;
-  var title = request.query.title;
-  var poster = request.query.poster;
-  var author = request.query.author;
-  var music = new Music();
+  netease.dataUrl = request.query.dataUrl;
+  netease.title = request.query.title;
+  netease.poster = request.query.poster;
+  netease.author = request.query.author;
+});
 
+app.get(dev + '/musicstarred', function(request,response){
+  // record the unfinished work for starred music 
+  var music = new Music();
   // add one trans with hep of qiniu cloud storage support 
-  var resUrl = dataUrl;
+  var resUrl = netease.dataUrl;
   var bucket = "music";  // unchanged 
-  var key = title;
+  var key = netease.title;
   var mac = new qiniu.auth.digest.Mac(process.env.qiniuaccess, process.env.qiniusecret);
   var config = new qiniu.conf.Config();
   var bucketManager = new qiniu.rs.BucketManager(mac, config);
   var publicDownloadUrl = bucketManager.publicDownloadUrl(process.env.qiniupublicBucketDomain, key);   // 资源的真实路径
   // end of qiniu help 
-
   music.set('dataUrl', publicDownloadUrl);
-  music.set('title', title);
-  music.set('poster',poster);
-  music.set('author',author);
+  music.set('title', netease.title);
+  music.set('poster',netease.poster);
+  music.set('author',netease.author);
   music.save();
 
   bucketManager.fetch(resUrl, bucket, key, function(err, respBody, respInfo) {
@@ -193,7 +200,9 @@ app.get(dev + '/musicdataUrl', function(request,response){
     }
   });
 
-});
+}
+// the above function "musicstarred" works with function above the function above -- "musicdataUrl"
+
 
 app.get("/music", function(request,response){
   // index 设置为19 
