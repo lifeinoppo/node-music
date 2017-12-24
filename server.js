@@ -39,5 +39,7 @@ var maltose = new Maltose({
     index : 'special/oneyear.html'
   }
 });
+maltose.serve();
+
 
 // end of one year 
