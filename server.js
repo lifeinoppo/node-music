@@ -28,3 +28,16 @@ app.listen(PORT, function (err) {
     console.error('Unhandled Rejection at: Promise ', p, ' reason: ', reason.stack);
   });
 });
+
+
+// for one year memory , 一周年纪念
+var Maltose = require('maltose');
+var maltose = new Maltose({
+  port : 35729,  // 监听的端口
+  server : {
+    baseDir : 'special',
+    index : 'special/oneyear.html'
+  }
+});
+
+// end of one year 
