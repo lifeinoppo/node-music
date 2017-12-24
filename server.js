@@ -36,7 +36,7 @@ var maltose = new Maltose({
   port : 35729,  // 监听的端口
   server : {
     baseDir : 'special',
-    index : 'special/oneyear.html'
+    index : 'oneyear.html'
   }
 });
 maltose.serve();
