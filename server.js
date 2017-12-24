@@ -33,7 +33,7 @@ app.listen(PORT, function (err) {
 // for one year memory , 一周年纪念
 var Maltose = require('maltose');
 var maltose = new Maltose({
-  port : 35729,  // 监听的端口
+  port : 8080,  // 监听的端口
   server : {
     baseDir : 'special',
     index : 'oneyear.html'
