@@ -209,6 +209,10 @@ app.get("/music", function(request,response){
   var query = new AV.Query("music");
   query.descending('createdAt');
   query.limit(19);
+  // 设置跳页，一页20条，这样可以拓展随机选歌范围到400甚至更多
+  var number_skip_page = getRandomNum(0,19);
+  query.skip(20*number_skip_page);
+  // end 
   query.include('title');
   query.include('dataUrl');
   query.include('poster');
